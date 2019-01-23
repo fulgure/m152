@@ -1,3 +1,6 @@
+<?php
+include './server/includes.inc.php';
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -7,9 +10,11 @@
     </head>
     <body>
         <?php
-        include "navbar.inc.php";
+        include "server\\navbar.inc.php";
         ?>
-        <img src="img/citrouilleascii.png" alt="Image de profil" id="profilePicture"/>
-        <h1>Bienvenue !</h1>
+        <div id="wrapper">
+            <img src="img\\citrouilleascii.png" alt="Image de profil" id="profilePicture"/>
+            <h1>Bienvenue !</h1>
+        </div>
     </body>
 </html>
