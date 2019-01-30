@@ -3,8 +3,8 @@ define('EDB_DBTYPE', 'mysql');
 define('EDB_HOST', '127.0.0.1');
 define('EDB_PORT', '3306');
 define('EDB_DBNAME', 'm152');
-define('EDB_USER', 'root');
-define('EDB_PASS', '');
+define('EDB_USER', 'natalem');
+define('EDB_PASS', 'MTxRerwUvz7uudHY');
 /**
  * Retourne un objet PDO connecté à la base de données
  * @return \PDO

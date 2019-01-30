@@ -1,33 +1,23 @@
 <?php
 include './server/includes.inc.php';
-$correctInputs = 0;
-if (isset($_FILES['image']['error'])) {
-    if ($_FILES['image']['error'] == UPLOAD_ERR_OK) {
-        if ($_FILES['image']['type'] == 'image/png' || $_FILES['image']['type'] == 'image/jpeg' || $_FILES['image']['type'] == 'image/jpeg') {
-            $correctInputs++;
-        } else {
-            echo 'a';
-        }
-    } else {
-        echo 'b';
-    }
-} else {
-    echo 'c';
-}
-$commentaire = '';
-if (isset($_REQUEST['commentaire'])) {
+$correctInputs = 0; 
+if (isset($_FILES['image']['tmp_name'])){
     $correctInputs++;
-    $commentaire = filter_input(INPUT_GET, 'commentaire');
 }
-if ($correctInputs == 2 && strlen($commentaire) > 0) {
+if (isset($_POST['commentaire'])) {
+    $correctInputs++;
+    $commentaire = filter_input(INPUT_POST, 'commentaire');
+}
+var_dump($_FILES);
+if ($correctInputs === 2 && strlen($commentaire) > 0) {
+    $fileCount = count($_FILES['image']['tmp_name']);
     $mediaName = uploadImg($_FILES['image']['name']);
     if ($mediaName !== false) {
-        if (addPost($commentaire, $_FILES['type'], $nom)) {
+        /*if (addPost($commentaire, $_FILES['image']['type'], $mediaName)) {
             header('Location: index.php');
-        }
+        }*/
     }
 }
-echo $correctInputs;
 ?>
 <!DOCTYPE html>
 <html>
@@ -42,10 +32,10 @@ echo $correctInputs;
         ?>
         <div id="wrapper">
             <table>
-                <form action="post.php" method="GET" enctype="multipart/form-data">
+                <form method="POST" enctype="multipart/form-data">
                     <tr>
                         <td>Image : </td>
-                        <td><input type="file" name="image" value="" /></td>
+                        <td><input type="file" name="image[]" value="" multiple  accept="image/*"/></td>
                     </tr>
                     <tr>
                         <td>Commentaire : </td>

@@ -1,5 +1,6 @@
 <?php
 include './server/includes.inc.php';
+$posts = getAllPosts();
 ?>
 <!DOCTYPE html>
 <html>
@@ -13,8 +14,17 @@ include './server/includes.inc.php';
         include "server\\navbar.inc.php";
         ?>
         <div id="wrapper">
-            <img src="img\\citrouilleascii.png" alt="Image de profil" id="profilePicture"/>
-            <h1>Bienvenue !</h1>
+            <div id="indexWrapper">
+                <img src="img\\avatar.jpg" alt="Image de profil" id="profilePicture"/>
+                <h1>Bienvenue !</h1>
+                <hr>
+                <?php foreach ($posts as $singlePost) { ?>
+                    <figure>
+                        <img class="singleImageWrapper" src="img\\<?= $singlePost->nomImage ?>" alt="<?= $singlePost->commentaire ?>"/>
+                        <figcaption><?= $singlePost->commentaire ?>, Posté le <?= $singlePost->datePosted ?></figcaption>
+                    </figure>
+                <?php } ?>
+            </div>
         </div>
     </body>
 </html>
