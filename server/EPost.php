@@ -6,7 +6,9 @@
  * @author natalem_info
  */
 class EPost {
-    public $nomImage;
+    public $nomMedia;
+    public $hasImage;
     public $commentaire;
+    public $typeMedia;
     public $datePosted;
 }

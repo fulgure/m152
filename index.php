@@ -18,12 +18,53 @@ $posts = getAllPosts();
                 <img src="img\\avatar.jpg" alt="Image de profil" id="profilePicture"/>
                 <h1>Bienvenue !</h1>
                 <hr>
-                <?php foreach ($posts as $singlePost) { ?>
-                    <figure>
-                        <img class="singleImageWrapper" src="img\\<?= $singlePost->nomImage ?>" alt="<?= $singlePost->commentaire ?>"/>
-                        <figcaption><?= $singlePost->commentaire ?>, Posté le <?= $singlePost->datePosted ?></figcaption>
-                    </figure>
-                <?php } ?>
+                <?php
+                foreach ($posts as $singlePost) {
+                    if (!is_array($singlePost->nomMedia)) {
+                        ?>
+                        <figure>
+                            <?php
+                            if ($singlePost->hasImage) {
+                                ?>
+                                <img class="singleImageWrapper" src="media\\<?= $singlePost->nomMedia[0] ?>" alt="<?= $singlePost->commentaire ?>"/>
+                                <?php
+                            } else {
+                                ?>
+                                <video width="300" height="300" controls>
+                                    <source src="<?= $singlePost->nomMedia ?> type='<?= $singlePost->typeMedia ?>'"/>
+                                    Your browser does not support HTML5 video
+                                </video>
+                                <?php
+                            }
+                            ?>
+                            <figcaption><?= $singlePost->commentaire ?>, Posté le <?= $singlePost->datePosted ?></figcaption>
+                        </figure>
+                        <?php
+                    } else {
+                        ?>
+                        <figure>
+                            <?php
+                            foreach ($singlePost->nomMedia as $media) {
+                                if ($singlePost->hasImages) {
+                                    ?>
+                                    <img class="singleImageWrapper" src="media\\<?= $media ?>" alt="<?= $singlePost->commentaire ?>"/>
+                                    <?php
+                                } else {
+                                    ?>
+                                    <video width="300" height="300" controls>
+                                        <source src="<?= $media ?> type='<?= $singlePost->typeMedia ?>'"/>
+                                        Your browser does not support HTML5 video
+                                    </video>
+                                    <?php
+                                }
+                            }
+                            ?>
+                            <figcaption><?= $singlePost->commentaire ?>, Posté le <?= $singlePost->datePosted ?></figcaption>
+                        </figure>
+                        <?php
+                    }
+                }
+                ?>
             </div>
         </div>
     </body>

@@ -31,9 +31,7 @@ body{
     margin:auto;
     margin-top:2%;
     background-color: rgba(255,255,255,0.75);
-    display:flex;
-    justify-content: center;
-    align-items: center;
+
 }
 .singleImageWrapper {
     width:250px;
@@ -47,6 +45,7 @@ body{
     width:100%;
     text-align:center;
     height:100%;
+
 }
 #indexWrapper > h1{
     display:inline-block;
@@ -60,7 +59,21 @@ body{
 }
 figure{
     display:inline-block;
+    background-color: rgba(150,150,150,0.5);
+    padding:15px 25px 10px 10px;
+    border: 2px dotted purple;
 }
 nav ul li a{
     color:white;
+}
+#postWrapper{
+    margin-left:15px;
+}
+#postWrapper table{
+    margin-left:15px;
+}
+#mainWrapper{
+    display:flex;
+    justify-content: center;
+    align-items: center;
 }
