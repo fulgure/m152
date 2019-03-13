@@ -20,49 +20,33 @@ $posts = getAllPosts();
                 <hr>
                 <?php
                 foreach ($posts as $singlePost) {
-                    if (!is_array($singlePost->nomMedia)) {
-                        ?>
-                        <figure>
-                            <?php
-                            if ($singlePost->hasImage) {
+                    ?>
+                    <figure>
+                        <?php
+                        for ($i = 0; $i < count($singlePost->nomMedia); $i++) {
+                            if ($singlePost->IsImage($i)) {
                                 ?>
-                                <img class="singleImageWrapper" src="media\\<?= $singlePost->nomMedia[0] ?>" alt="<?= $singlePost->commentaire ?>"/>
+                                <img class="singleImageWrapper" src="media\\<?= $singlePost->nomMedia[$i] ?>" alt="<?= $singlePost->commentaire ?>"/>
                                 <?php
-                            } else {
+                            } else if ($singlePost->IsVideo($i)) {
                                 ?>
-                                <video width="300" height="300" controls>
-                                    <source src="<?= $singlePost->nomMedia ?> type='<?= $singlePost->typeMedia ?>'"/>
+                                <video width="300" height="300" controls autoplay loop>
+                                    <source src="media/<?= $singlePost->nomMedia[$i] ?>" type="<?= $singlePost->typeMedia[$i] ?>"/>
                                     Your browser does not support HTML5 video
                                 </video>
                                 <?php
+                            } else {
+                                ?>
+                                <audio controls>
+                                    <source src="media/<?= $singlePost->nomMedia[$i] ?>" type="<?= $singlePost->typeMedia[$i] ?>"/>
+                                </audio>
+                                <?php
                             }
-                            ?>
-                            <figcaption><?= $singlePost->commentaire ?>, Posté le <?= $singlePost->datePosted ?></figcaption>
-                        </figure>
-                        <?php
-                    } else {
+                        }
                         ?>
-                        <figure>
-                            <?php
-                            foreach ($singlePost->nomMedia as $media) {
-                                if ($singlePost->hasImages) {
-                                    ?>
-                                    <img class="singleImageWrapper" src="media\\<?= $media ?>" alt="<?= $singlePost->commentaire ?>"/>
-                                    <?php
-                                } else {
-                                    ?>
-                                    <video width="300" height="300" controls>
-                                        <source src="<?= $media ?> type='<?= $singlePost->typeMedia ?>'"/>
-                                        Your browser does not support HTML5 video
-                                    </video>
-                                    <?php
-                                }
-                            }
-                            ?>
-                            <figcaption><?= $singlePost->commentaire ?>, Posté le <?= $singlePost->datePosted ?></figcaption>
-                        </figure>
-                        <?php
-                    }
+                        <figcaption><?= $singlePost->commentaire ?>, Posté le <?= $singlePost->datePosted ?></figcaption>
+                    </figure>
+                    <?php
                 }
                 ?>
             </div>

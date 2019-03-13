@@ -23,7 +23,6 @@ function uploadSingleMedia($title, $tmpName) {
     $cnt = 1;
     while (checkMediaExists($title)) {
         $title = substr($title, 0, -4) . '-' . $cnt . substr($title, -4);
-        echo $title;
         $cnt++;
     }
     $targetFile = 'media\\' . $title;
@@ -59,6 +58,7 @@ function addMediaToDB($noms, $type, $postID) {
 }
 
 function addSingleMediaToDB($nom, $type, $lastId) {
+    EDatabase::beginTransaction();
     $sql = "INSERT INTO `media`(`nomFichierMedia`, `typeMedia`, `idPost`) VALUES (:nom, :type, :id)";
     $conn = EDatabase::prepare($sql);
     $result = $conn->execute(array(
@@ -66,6 +66,8 @@ function addSingleMediaToDB($nom, $type, $lastId) {
         'type' => $type,
         'id' => $lastId
     ));
+    if(!$result)
+        EDatabase::rollBack();
     return $result;
 }
 
@@ -93,18 +95,25 @@ function getAllPosts() {
     $posts = $stmt->fetchAll();
     $result = [];
     foreach ($posts as $post) {
+        $medias = getMediaFromPost($post['idPost']);
+        $mediaNames = [];
+        $mediaTypes = [];
+        foreach ($medias as $media) {
+            array_push($mediaNames, $media["nom"]);
+            array_push($mediaTypes, $media["type"]);
+        }
         $singlePost = new EPost();
         $singlePost->commentaire = $post["commentaire"];
-        $singlePost->hasImages = postContainsImages($post['idPost']);
-        $singlePost->nomMedia = getMediaFromPost($post['idPost']);
+        //$singlePost->hasImages = postContainsImages($post['idPost']);
+        $singlePost->nomMedia = $mediaNames;
         $singlePost->datePosted = $post["datePost"];
-        $singlePost->typeMedia = post[""]
+        $singlePost->typeMedia = $mediaTypes;
         array_push($result, $singlePost);
     }
     return $result;
 }
 
-function postContainsImages($id){
+/*function postContainsImages($id){
     $sql = "SELECT COUNT(m.idMedia) AS cnt FROM `media` AS m JOIN posts AS p ON p.idPost = m.idPost WHERE m.typeMedia LIKE 'image/%' and m.idPost = :id";
     $stmt = EDatabase::prepare($sql);
     $stmt->execute(array(
@@ -112,7 +121,7 @@ function postContainsImages($id){
     ));
     $result = $stmt->fetchAll();
     return ($result[0]["cnt"] > 0);
-}
+}*/
 function getMediaFromPost($idPost) {
     $sql = "SELECT m.nomFichierMedia, m.typeMedia from Media as m JOIN posts as p ON m.idPost = p.idPost WHERE m.idPost = :id";
     $conn = EDatabase::getInstance()->prepare($sql);
@@ -123,7 +132,10 @@ function getMediaFromPost($idPost) {
     $result = [];
     ///TODO
     foreach ($images as $image) {
-        array_push($result, $image["nomFichierMedia"]);
+        $img = [];
+        $img["nom"] = $image["nomFichierMedia"];
+        $img["type"] = $image["typeMedia"];
+        array_push($result, $img);
     }
     return $result;
 }
