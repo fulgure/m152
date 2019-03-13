@@ -10,14 +10,15 @@ if (isset($_REQUEST['commentaire'])) {
 }
 $isOkay = false;
 if ($correctInputs === 2 && strlen($commentaire) > 0) {
+    $types = [];
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    foreach ($_FILES['media']['tmp_name'] as $media) {
+        $mime = finfo_file($finfo, $media);
+        array_push($types, $mime);
+    }
+    $isOKay = 
     $mediaName = uploadMedia($_FILES['media']['name'], $_FILES['media']['tmp_name']);
     if ($mediaName !== false) {
-        $types = [];
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        foreach ($mediaName as $media) {
-            $mime = finfo_file($finfo,'media/'.$media);
-            array_push($types, $mime);
-        }
         $isOkay = addPost($commentaire, $types, $mediaName);
     }
 }

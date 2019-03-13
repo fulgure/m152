@@ -30,7 +30,7 @@ $posts = getAllPosts();
                                 <?php
                             } else if ($singlePost->IsVideo($i)) {
                                 ?>
-                                <video width="300" height="300" controls autoplay loop>
+                                <video muted width="300" height="300" controls loop>
                                     <source src="media/<?= $singlePost->nomMedia[$i] ?>" type="<?= $singlePost->typeMedia[$i] ?>"/>
                                     Your browser does not support HTML5 video
                                 </video>
